@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "33183a5e-a01e-4410-8b03-48fe7569b093",
+		"name": "onebigthing",
+		"description": "Pruebas de API del proyecto ONE Big Thing Honduras",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/api/users/new",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "obetancourthunicah@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "AlgoComoPasswordXyZ",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"new"
+					]
+				},
+				"description": "Registrar Nuevo Usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/users/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "obetancourthunicah@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "HolaMundo1234.%33",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				},
+				"description": "Login al api backend"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/things",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/things",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"things"
+					]
+				},
+				"description": "Obtener los Things Por Hacer"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/things/new",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "Nuevo Thing",
+							"type": "text"
+						},
+						{
+							"key": "duedate",
+							"value": "20190131",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Nuevo Thing a realizar el día asignado",
+							"type": "text"
+						},
+						{
+							"key": "userid",
+							"value": "123412341234123",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "big",
+							"description": "big|small",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/things/new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"things",
+						"new"
+					]
+				},
+				"description": "Agregar Nuevo Thing"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/things/done/1234adf3adfabbbd329654",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/things/done/1234adf3adfabbbd329654",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"things",
+						"done",
+						"1234adf3adfabbbd329654"
+					]
+				},
+				"description": "Marca el Thing por el ID como terminado"
+			},
+			"response": []
+		}
+	]
+}
