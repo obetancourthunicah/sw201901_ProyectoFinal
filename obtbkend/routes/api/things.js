@@ -30,8 +30,12 @@ router.get('/', function( req, res, next) {
 
 router.post('/new', function(req, res, next){
   var _thingsData = Object.assign({} , bigThingTp, req.body);
-  _thingsData.fcIng = new Date;
-  _thingsData.due = new Date(_thingsData.fcIng.setDate(_thingsData.fcIng.getDate()+3));
+  var dateT = new Date();
+  var dateD = new Date();
+  dateD.setDate(dateT.getDate()+ 3);
+  _thingsData.fcIng = dateT;
+  _thingsData.due = dateD;
+
   if(!data){
     data = [];
   }
