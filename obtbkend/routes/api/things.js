@@ -2,12 +2,14 @@ var uuidv4 = require('uuid/v4');
 var express = require('express');
 var router = express.Router();
 
+function thingsInit(db){
 
 var fileModel = require('./jsonmodel');
+var mongoModel = require('./mongoModel')(db);
 var data = null; // temporary store
 
 var bigThingTp = {
-  '_id':'',
+  //'_id':'',
   'desc':'',
   'fcIng':null,
   'author':'',
@@ -17,20 +19,43 @@ var bigThingTp = {
 };
 //obtenerOneBigThing
 router.get('/', function( req, res, next) {
-  if(!data){
-    fileModel.read(function(err, filedata){
-      if(err){
+  /// Mongo Model 
+  mongoModel.getAllThings(
+    function(err, docs){
+      if(err) {
         console.log(err);
-        data = [];
-        return res.status(500).json({'error':'Error al Obtener Data'});
+        return res.status(500).json({error:"Algo Paso"});
       }
-      data = JSON.parse(filedata);
-      return res.status(200).json(data);
-    });
-  } else {
-    return res.status(200).json(data);
-  }
+      return res.status(200).json(docs);
+    }
+  ); // getAllThings
+
+  //----------------------
+  /// File Model
+  // if(!data){
+  //   fileModel.read(function(err, filedata){
+  //     if(err){
+  //       console.log(err);
+  //       data = [];
+  //       return res.status(500).json({'error':'Error al Obtener Data'});
+  //     }
+  //     data = JSON.parse(filedata);
+  //     return res.status(200).json(data);
+  //   });
+  // } else {
+  //   return res.status(200).json(data);
+  // }
 });// get /
+
+router.get('/byid/:thingid', (req, res, next)=>{
+  mongoModel.getThingById(req.params.thingid, (err, thingDoc)=>{
+    if(err){
+      console.log(err);
+      return res.status(500).json({"error":"Error al obtener el Thing"});
+    }
+    return res.status(200).json(thingDoc);
+  } );//getThing By Id
+}); // byid:thingid
 
 router.post('/new', function(req, res, next){
   var _thingsData = Object.assign({} , bigThingTp, req.body);
@@ -39,18 +64,28 @@ router.post('/new', function(req, res, next){
   dateD.setDate(dateT.getDate()+ 3);
   _thingsData.fcIng = dateT;
   _thingsData.due = dateD;
-  _thingsData._id = uuidv4();
-  if(!data){
-    data = [];
-  }
-  data.push(_thingsData);
-  fileModel.write(data, function(err){
+ // _thingsData._id = uuidv4();
+  // Mongo Model
+  mongoModel.addNewThing(_thingsData, (err, newThing)=>{
     if(err){
       console.log(err);
-      return res.status(500).json({ 'error': 'Error al Obtener Data' });
+      return res.status(500).json({"error":"No se puede agregar Thing!"});
     }
-    return res.status(200).json(_thingsData);
-  });
+    return res.status(200).json(newThing);
+  });// addNewThing
+  // -----------------------
+  /// Old File Model
+  // if(!data){
+  //   data = [];
+  // }
+  // data.push(_thingsData);
+  // fileModel.write(data, function(err){
+  //   if(err){
+  //     console.log(err);
+  //     return res.status(500).json({ 'error': 'Error al Obtener Data' });
+  //   }
+  //   return res.status(200).json(_thingsData);
+  // });
 });// nuevo bigThing
 
 router.put('/done/:thingId', function(req, res, next){
@@ -110,4 +145,8 @@ fileModel.read(function(err , filedata){
   }
 });
 
-module.exports = router;
+return router;
+
+} // thingInit
+
+module.exports = thingsInit;
