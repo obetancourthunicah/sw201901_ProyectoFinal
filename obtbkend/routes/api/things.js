@@ -57,6 +57,18 @@ router.get('/byid/:thingid', (req, res, next)=>{
   } );//getThing By Id
 }); // byid:thingid
 
+router.get('/bytags/:tag', (req, res, next)=>{
+  mongoModel.searchByTag((req.params.tag || '').split('_'), (err, docs)=>{
+    if(err){
+      console.log(err);
+      return res.status(500).json({"error":"No se encontro OBTS"});
+    }else{
+      return res.status(200).json(docs);
+    }
+  } ); //searchByTag
+});// by tag
+
+
 router.post('/new', function(req, res, next){
   var _thingsData = Object.assign({} , bigThingTp, req.body);
   var dateT = new Date();
@@ -115,6 +127,17 @@ router.put('/done/:thingId', function(req, res, next){
     return res.status(200).json(_thingUpdated);
   });
 });// Set A Thing as Done
+
+router.put('/addtags/:id', (req, res, next)=>{
+  mongoModel.addTagsToThing((req.body.tags || '').split('|'), req.params.id, (err, rsult)=>{
+    if(err){
+      console.log(err);
+      return res.status(500).json({"error":"No se puede actualizar el OBT"});
+    }
+    return res.status(200).json(rsult);
+  });// end addTagsToThing
+});// addtags
+
 
 
 router.delete('/delete/:thingId', function(req, res, next){
