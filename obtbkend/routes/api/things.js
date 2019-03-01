@@ -102,30 +102,37 @@ router.post('/new', function(req, res, next){
 
 router.put('/done/:thingId', function(req, res, next){
   var _thingId = req.params.thingId;
-  var _thingUpds = req.body;
-  var _thingUpdated = null;
-  var newData = data.map(
-    function(doc, i){
-      if (doc._id == _thingId){
-        _thingUpdated = Object.assign(
-          {},
-          doc,
-          {"done":true},
-          _thingUpds
-          );
-        return _thingUpdated;
-      }
-      return doc;
-    }
-  );// end map
-  data = newData;
-  fileModel.write(data, function (err) {
-    if (err) {
+  mongoModel.toggleOBTDone(_thingId, (err, rslt)=>{
+    if(err){
       console.log(err);
-      return res.status(500).json({ 'error': 'Error al Guardar Data' });
+      return res.status(500).json({"error":"No se pudo actualizar OBT"});
     }
-    return res.status(200).json(_thingUpdated);
-  });
+    return res.status(200).json(rslt);
+  }); //toggleOBTDone
+  // var _thingUpds = req.body;
+  // var _thingUpdated = null;
+  // var newData = data.map(
+  //   function(doc, i){
+  //     if (doc._id == _thingId){
+  //       _thingUpdated = Object.assign(
+  //         {},
+  //         doc,
+  //         {"done":true},
+  //         _thingUpds
+  //         );
+  //       return _thingUpdated;
+  //     }
+  //     return doc;
+  //   }
+  // );// end map
+  // data = newData;
+  // fileModel.write(data, function (err) {
+  //   if (err) {
+  //     console.log(err);
+  //     return res.status(500).json({ 'error': 'Error al Guardar Data' });
+  //   }
+  //   return res.status(200).json(_thingUpdated);
+  // });
 });// Set A Thing as Done
 
 router.put('/addtags/:id', (req, res, next)=>{

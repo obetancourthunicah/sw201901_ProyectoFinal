@@ -60,6 +60,36 @@ function mongoModel(db){
     }); //toArray
   } //serachByTag
 
+
+  lib.toggleOBTDone = (id, handler) => {
+    var filter = {"_id": ObjectId(id)};
+    // get filered document
+    obt.findOne(filter, (err, doc) => {
+      if(err) {
+        handler(err, null);
+      } else {
+          if(doc){
+              //doc.done = !doc.done;
+              //doc.fcDone = new Date();
+              var updateExpression = {};
+              if(doc.done){
+                  updateExpression = {"$set": {done : false, fcDone:null} };
+              }else{
+                  updateExpression = { "$set": { done: true, fcDone:new Date() } };
+              }
+              obt.updateOne(filter, updateExpression, (err, rslt)=> {
+                  if(err) {
+                    handler(err, null);
+                  }else{
+                    handler(null, rslt.result);
+                  }
+              }); // updateOne
+          }else{
+            handler(new Error("El documento no Existe"), null)
+          }
+      }
+    } );//findOne
+  }
   return lib;
 } // mongoModel
  module.exports = mongoModel;
