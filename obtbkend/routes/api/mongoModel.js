@@ -90,6 +90,19 @@ function mongoModel(db){
       }
     } );//findOne
   }
+
+  lib.deleteById = (Id, handler)=>{
+    obt.deleteOne({"_id": ObjectId(Id)}, (err, rslt)=>{
+      if(err){
+        console.log(err);
+        handler(err, null);
+      } else {
+        handler(null, rslt.result);
+      }
+    }); // deleteOne
+  } // deleteById
+
+  
   return lib;
 } // mongoModel
  module.exports = mongoModel;

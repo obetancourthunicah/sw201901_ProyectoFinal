@@ -149,22 +149,28 @@ router.put('/addtags/:id', (req, res, next)=>{
 
 router.delete('/delete/:thingId', function(req, res, next){
   var _thingId = req.params.thingId;
-  var newData = data.filter(
-    function (doc, i) {
-      if (doc._id == _thingId) {
-        return false;
-      }
-      return true;
+  mongoModel.deleteById(_thingId, (err, result)=>{
+    if(err){
+      return res.status(500).json({"error":"No se pudo eliminar dato"});
     }
-  );// end map
-  data = newData;
-  fileModel.write(data, function (err) {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ 'error': 'Error al Guardar Data' });
-    }
-    return res.status(200).json({"delete": _thingId});
-  });
+    return res.status(200).json(result);
+  }); //deleteById
+  // var newData = data.filter(
+  //   function (doc, i) {
+  //     if (doc._id == _thingId) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }
+  // );// end map
+  // data = newData;
+  // fileModel.write(data, function (err) {
+  //   if (err) {
+  //     console.log(err);
+  //     return res.status(500).json({ 'error': 'Error al Guardar Data' });
+  //   }
+  //   return res.status(200).json({"delete": _thingId});
+  // });
 }); // end delete
 
 fileModel.read(function(err , filedata){
