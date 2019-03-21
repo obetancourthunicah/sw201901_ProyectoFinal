@@ -1,0 +1,10 @@
+.clasic {
+  box-sizing: border-box;
+  background-color: #333;
+  color: #fff;
+  font-weight: bold;
+}
+.enhanced {
+  background-color: #111;
+  color: #F00;
+}

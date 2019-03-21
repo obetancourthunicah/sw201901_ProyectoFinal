@@ -181,6 +181,13 @@ fileModel.read(function(err , filedata){
   }
 });
 
+router.get('/tags', (req, res, next)=>{
+  mongoModel.getTagsCounter((err, docs)=>{
+    if(err) return res.status(500).json({"error":"Algo Paso"});
+    return res.status(200).json(docs);
+  });
+});
+
 return router;
 
 } // thingInit

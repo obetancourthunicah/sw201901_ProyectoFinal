@@ -102,7 +102,41 @@ function mongoModel(db){
     }); // deleteOne
   } // deleteById
 
-  
+  lib.getTagsCounter = (handler)=>{
+    var aggregatePipeline = [
+      {
+        "$project": {
+          "tags": 1,
+          "type": 1
+        }
+      },
+      {
+        "$unwind": "$tags"
+      },
+      {
+        "$group": {
+          "_id": {
+            "tags": "$tags",
+            "type": "$type"
+          },
+          "count": {
+            "$sum": 1
+          }
+        }
+      },
+      {
+        "$sort": {"count": -1}
+      }
+    ];
+    obt.aggregate(aggregatePipeline).toArray((err, docs)=>{
+      if(err){
+        console.log(err);
+        return handler(err, null);
+      }
+      return handler(null, docs);
+    }); //aggregate
+  } // getTagsCounter
+
   return lib;
 } // mongoModel
  module.exports = mongoModel;
