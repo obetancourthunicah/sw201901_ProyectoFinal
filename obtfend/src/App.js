@@ -5,6 +5,8 @@ import Login from './Components/pages/login/Login';
 import Signin from './Components/pages/signin/Signin';
 import Footer from './Components/generics/footer/Footer';
 import List from './Components/pages/list/List';
+import Detail from './Components/pages/detail/Detail';
+import NewItem from './Components/pages/newitem/NewItem';
 import './App.css';
 
 function Home() {
@@ -26,6 +28,8 @@ class App extends Component {
             <Route path="/login"  component={Login} />
             <Route path="/signin" component={Signin} />
             <Route path="/list" component={List} />
+            <Route path="/addnew" component={NewItem} />
+            <Route path="/detail/:itemid" component={Detail} />
           <Footer></Footer>
         </div>
       </Router>

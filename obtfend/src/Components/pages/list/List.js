@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import './List.css';
 
 function ListItem(props){
   return(
     <div key={props._id}>
-      <b>{props.desc}</b>
+      <b>
+        <Link to={`/detail/${props._id}`}>{props.desc}</Link>
+      </b>
     </div>
   );
 }
@@ -41,6 +44,7 @@ class List extends Component{
       <div className="listHolder">
       <h1>Lista</h1>
       <h2>Documentos {this.state.things.length}</h2>
+      <Link to="addnew">Agregar OBT</Link>
       <div>
         {listItems}
       </div>
