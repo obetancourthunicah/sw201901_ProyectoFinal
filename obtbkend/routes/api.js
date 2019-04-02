@@ -6,8 +6,18 @@ function apiInit(db){
   var thingsApi = require('./api/things')(db);
   var distBinApi = require('./api/distbin')(db);
 
+  // Esto es una función Middleware
+  function verificarLogin(req, res, next ){
+    var isLoggedIn = req.session.logged && true;
+    if(isLoggedIn){
+      next();
+    }else{
+      res.status(403).json({"error":"No Autorizado"});
+    }
+  }
+
   router.use('/users', usersApi);
-  router.use('/things', thingsApi);
+  router.use('/things', verificarLogin ,thingsApi);
   router.use('/distbin', distBinApi);
     return router;
 }
