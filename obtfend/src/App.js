@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
+import PrivateRoute from './Components/generics/privateroute/PrivateRoute';
+
 import Login from './Components/pages/login/Login';
 import Signin from './Components/pages/signin/Signin';
 import Footer from './Components/generics/footer/Footer';
@@ -14,6 +16,18 @@ function Home() {
 }
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      isAuthenticated : false,
+      user: null,
+      firsVerified: false
+    }
+    this.setAuthState = this.setAuthState.bind(this);
+  }
+  setAuthState(authProps){
+    this.setState(authProps);
+  }
   render() {
     return (
       <Router>
@@ -25,11 +39,11 @@ class App extends Component {
             <li><Link to="/list">List</Link> </li>
           </nav>
             <Route path="/" exact component={Home}  />
-            <Route path="/login"  component={Login} />
+            <Route path="/login"  render={(p)=>(<Login {...p} auth={{...this.state, setAuthState:this.setAuthState}}/>)} />
             <Route path="/signin" component={Signin} />
-            <Route path="/list" component={List} />
-            <Route path="/addnew" component={NewItem} />
-            <Route path="/detail/:itemid" component={Detail} />
+            <PrivateRoute path="/list" component={List} auth={this.state}/>
+            <PrivateRoute path="/addnew" component={NewItem} auth={this.state}/>
+            <PrivateRoute path="/detail/:itemid" component={Detail} auth={this.state}/>
           <Footer></Footer>
         </div>
       </Router>
